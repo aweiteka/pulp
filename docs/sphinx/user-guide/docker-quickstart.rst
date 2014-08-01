@@ -85,6 +85,13 @@ Copy
 
 Copy repositories for dev-ops type workflows
 
+Troubleshooting
+---------------
+
+Logging
+^^^^^^^
+
+From host use journald.
 
 .. note::
 
