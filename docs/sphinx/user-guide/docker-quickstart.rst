@@ -26,14 +26,9 @@ This document focuses on the multi-container environment.
 Installation
 ------------
 
-FIXME
+Installing the Server
+^^^^^^^^^^^^^^^^^^^^^
 
-Server
-^^^^^^
-
-Outline steps for container deployment. Mention VM as alternate option, referring to upstream docs.
-* basic script
-* kubernetes (TBA)
 
 Installing the Admin Client
 
@@ -63,7 +58,18 @@ Dockerfile
 
 Source: https://github.com/aweiteka/pulp/tree/docker_admin_client/
 
+
+Pulp Service Structure in Docker with Kubernetes
+------------------------------------------------
 .. image:: images/Pulp_Service_Structure_in_Docker_with_Kubernetes.png
+
+
+To Be Done 04 Aug 2014
+----------------------
+:strike:`Outline steps for container deployment.`
+Mention VM as alternate option, referring to upstream docs.
+* basic script
+* kubernetes (TBA)
 
 client_admin
 ^^^^^^^^^^^^
