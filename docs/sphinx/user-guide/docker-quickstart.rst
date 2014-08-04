@@ -63,7 +63,7 @@ Dockerfile
 
 Source: https://github.com/aweiteka/pulp/tree/docker_admin_client/
 
-.. :: images/Pulp_Service_Structure_in_Docker_with_Kubernetes.png
+.. image:: images/Pulp_Service_Structure_in_Docker_with_Kubernetes.png
 
 client_admin
 ^^^^^^^^^^^^
