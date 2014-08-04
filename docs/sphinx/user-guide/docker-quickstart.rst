@@ -33,21 +33,21 @@ Server
 
 Outline steps for container deployment. Mention VM as alternate option, referring to upstream docs.
 * basic script
-*  kubernetes (TBA)
+* kubernetes (TBA)
 
 Installing the Admin Client
 
 Run the pulp-admin client as a container. Create an alias for the docker run command. The ENTRYPOINT for the container is the pulp-admin executable: pass commands to the alias as arguments. For example: pulp-client "pulp admin arguments".
 
 Setup
-1) The ~/.pulp directory is mounted when the container is run. Add the pulp server hostname and any other configuration values to ~/.pulp/admin.conf
+1) The ``~/.pulp directory`` is mounted when the container is run. Add the pulp server hostname and any other configuration values to ``~/.pulp/admin.conf``. 
 
     ::[server]
-    ::host = pulp-server.example.com
-    ::Pull the pulp-admin image
-    ::docker pull aweiteka/pulp-admin
+    host = pulp-server.example.com
+    Pull the pulp-admin image
+    docker pull aweiteka/pulp-admin
 
-2) Create an alias for pulp-client. For example, update your ~/.bashrc file with the line below and run source ~/.bashrc
+2) Create an alias for pulp-client. For example, update your ``~/.bashrc`` file with the line below and run ``source ~/.bashrc``
 
     ::alias pulp-client=“sudo docker run -t -v /home/<username>/.pulp:/.pulp aweiteka/pulp-admin”
 
