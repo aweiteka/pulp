@@ -67,10 +67,10 @@ Pulp Service Structure in Docker with Kubernetes
 
 To Be Done 04 Aug 2014
 ----------------------
-:strike:`Outline steps for container deployment.`
-Mention VM as alternate option, referring to upstream docs.
-* basic script
-* kubernetes (TBA)
+# Outline steps for container deployment. DONE 04 Aug 2014 0009 AEST
+# Mention VM as alternate option, referring to upstream docs. 
+# basic script
+# kubernetes (TBA) IMAGE INCLUDED, MORE WORK NEEDED
 
 client_admin
 ^^^^^^^^^^^^
