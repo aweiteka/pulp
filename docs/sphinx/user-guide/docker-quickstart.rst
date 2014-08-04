@@ -61,7 +61,12 @@ About
 
 Dockerfile
 
-Source: https://github.com/aweiteka/pulp/tree/docker_admin_client/client_admin^^^^^^^^^^^^
+Source: https://github.com/aweiteka/pulp/tree/docker_admin_client/
+
+.. : /images/Pulp_Service_Structure_in_Docker_with_Kubernetes.png
+
+client_admin
+^^^^^^^^^^^^
 
 Assume container admin client. Mention RPM install option, referring to upstream docs.
 
