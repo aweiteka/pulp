@@ -32,7 +32,9 @@ Installing the Server
 
 Installing the Admin Client
 
-Run the pulp-admin client as a container. Create an alias for the docker run command. The ENTRYPOINT for the container is the pulp-admin executable: pass commands to the alias as arguments. For example: pulp-client "pulp admin arguments".
+        Run the ``pulp-admin`` client as a container. Create an alias for the ``docker run`` command. The ``ENTRYPOINT`` for the container is the ``pulp-admin`` executable: pass commands to the alias as arguments. For example:: 
+
+       $ pulp-client <pulp admin arguments>
 
 Setup
 
