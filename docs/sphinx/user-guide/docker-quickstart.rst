@@ -10,7 +10,7 @@ Why Pulp As a Docker Registry?
 * Separation of admin (pulp backend client and API) and end-user interface
 * Role-based access control (RBAC) with LDAP support
 * Enables pushing content to public-facing servers while management interface behind firewall
-* Sync content accross an organization
+* Sync content accross an organization using `nodes <https://pulp-user-guide.readthedocs.org/en/latest/nodes.html>`_.
 * `Well-documented API <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>`_
 * `Event-based notifications <https://pulp-dev-guide.readthedocs.org/en/latest/integration/events/index.html>`_ (http/amqp/email) enables CI workflows and viewing history
 * Service-oriented architecture (SOA) enables scaling
@@ -39,31 +39,103 @@ This document focuses on the multi-container environment.
 Installation
 ------------
 
-Remote Clients
-^^^^^^^^^^^^^^
+Server
+^^^^^^
+
+**Host Configuration**
+
+1) Ensure docker daemon is running::
+
+        sudo systemctl status docker
+
+2) Open TCP ports 80 and 443 to incoming HTTP and HTTPS traffic::
+
+        sudo firewall-cmd --permanent --add-service http
+        sudo firewall-cmd --permanent --add-service https
+        sudo firewall-cmd --reload
+
+**Server Installation**
+
+The Pulp server is packaged as a multi-container environment. It is a basic "all-in-one" deployment that requires the containers to run on the same VM or bare metal host.
+
+1) Pull the images::
+
+        IMAGES=( "aweiteka/pulp-crane-allinone" \
+                 "aweiteka/pulp-worker" \
+                 "aweiteka/pulp-qpid" \
+                 "aweiteka/pulp-mongodb" \
+                 "aweiteka/pulp-apache" \
+                 "aweiteka/pulp-data" \
+                 "aweiteka/pulp-centosbase" )
+        for i in "${IMAGES[@]}"; do sudo docker pull $i; done
+
+2) View the images::
+
+        $ sudo docker images
+        REPOSITORY                     TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+        aweiteka/pulp-qpid             latest              d75a98181734        26 hours ago        405.3 MB
+        aweiteka/pulp-worker           latest              98faa0164705        26 hours ago        680.8 MB
+        aweiteka/pulp-mongodb          latest              e9531cd0f08b        27 hours ago        293.1 MB
+        aweiteka/pulp-data             latest              2c439bcd2872        27 hours ago        604.8 MB
+        aweiteka/pulp-apache           latest              367c5f169f1d        28 hours ago        683 MB
+        aweiteka/pulp-centosbase       latest              e2889f4dca42        4 days ago          604.8 MB
+        aweiteka/pulp-crane-allinone   latest              b81c502f6703        11 days ago         442.7 MB
+
+3) Download the orchestration script and run::
+
+        curl -O https://raw.githubusercontent.com/aweiteka/pulp-dockerfiles/master/centos/orchestrate.sh
+        sudo bash orchestrate.sh aweiteka
+
+4) View all running and stopped containers::
+
+        $ sudo docker ps -a
+        CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS         PORTS                           NAMES
+        38feb71f7691        aweiteka/pulp-crane-allinone:latest   /usr/sbin/httpd -D F   34 seconds ago      Up 33 seconds  0.0.0.0:80->80/tcp              pulp-crane              
+        9b025d72ee94        aweiteka/pulp-worker:latest           /run.sh resource_man   34 seconds ago      Up 34 seconds                                  pulp-resource_manager   
+        b7c3f923a0f7        aweiteka/pulp-worker:latest           /run.sh beat           35 seconds ago      Up 34 seconds                                  pulp-beat               
+        298ade639edc        aweiteka/pulp-worker:latest           /run.sh worker 2       35 seconds ago      Up 35 seconds                                  pulp-worker2            
+        ccab34aa1d61        aweiteka/pulp-worker:latest           /run.sh worker 1       36 seconds ago      Up 35 seconds                                  pulp-worker1            
+        b89ae83e1cbe        aweiteka/pulp-apache:latest           /run.sh                38 seconds ago      Up 36 seconds  0.0.0.0:443->443/tcp, 0.0.0.0:8080->80/tcp   pulp-apache             
+        77fcc121b0a5        aweiteka/pulp-qpid:latest             qpidd -t --auth=no     39 seconds ago      Up 38 seconds  0.0.0.0:5672->5672/tcp          pulp-qpid               
+        80d80664abfd        aweiteka/pulp-mongodb:latest          /usr/bin/mongod --qu   39 seconds ago      Up 39 seconds  0.0.0.0:27017->27017/tcp        pulp-mongodb            
+        137fbd04c73a        aweiteka/pulp-data:latest             /run.sh                40 seconds ago      Exited (0) 39 seconds ago                      pulp-data       
+
+.. note::
+
+   The pulp-data container exits immediately. It is a dependent volume container referenced by
+   ``--volumes-from``. It persist as a shared volume while the other containers are running.
+
+
+Remote Client Tools
+^^^^^^^^^^^^^^^^^^^
 
 The ``pulp-admin`` client may be `installed as an RPM <installation>`_ or run as a container. To run as a container an alias is created for the ``docker run`` command. The ``ENTRYPOINT`` for the container is the ``pulp-admin`` executable, enabling the user to pass commands to the alias as arguments. For example::
 
        $ pulp-admin <pulp admin arguments>
 
-The ``pulp-publish-docker`` utility has been developed as a prototype to automate pushing docker images to the Pulp registry. It is based on the pulp-admin client.
+The ``pulp-publish-docker`` utility is an initial prototype to automate pushing docker images to the Pulp registry. It is based on the pulp-admin client.
 
-Setup
+**Setup**
 
-1) The ``~/.pulp directory`` is mounted when the container is run. Add the pulp server hostname and any other configuration values to ``~/.pulp/admin.conf``::
+1) Create the ``~/.pulp`` client configuration directory and update the SELinux context::
+
+        mkdir ~/.pulp
+        chcon -Rvt svirt_sandbox_file_t ~/.pulp
+
+2) Create file ``~/.pulp/admin.conf`` and pulp server hostname::
 
         [server]
         host = pulp-server.example.com
 
-2) Pull the images::
+3) Pull the images::
 
-        docker pull aweiteka/pulp-admin
-        docker pull aweiteka/pulp-publish-docker
+        sudo docker pull aweiteka/pulp-admin
+        sudo docker pull aweiteka/pulp-publish-docker
 
-3) Create an alias for pulp-admin. For example, update your ``~/.bashrc`` file with the line below and run ``source ~/.bashrc``::
+4) Create aliases for ``pulp-admin`` and ``pulp-publish-docker``. For persistence, update your ``~/.bashrc`` file with the line below and run ``source ~/.bashrc``::
 
-        alias pulp-admin=“sudo docker run --rm -t -v ~/.pulp:/.pulp -v /tmp/docker_uploads/:/tmp/docker_uploads/ aweiteka/pulp-admin”
-        alias publish-docker="sudo docker run --rm -i -t -v ~/.pulp:/.pulp -v /tmp/docker_uploads/:/tmp/docker_uploads/ aweiteka/pulp-publish-docker"
+        alias pulp-admin="sudo docker run --rm -t -v ~/.pulp:/.pulp -v /tmp/docker_uploads/:/tmp/docker_uploads/ aweiteka/pulp-admin"
+        alias pulp-publish-docker="sudo docker run --rm -i -t -v ~/.pulp:/.pulp -v /tmp/docker_uploads/:/tmp/docker_uploads/ aweiteka/pulp-publish-docker"
 
 .. note::
 
@@ -71,20 +143,12 @@ Setup
    container after exiting. This adds a few seconds to execution and is optional.
 
 
-Server
-^^^^^^
+4) Login using the remote pulp-admin client. Default username is "admin". Default password is "admin"::
 
-The Pulp server is packaged as a multi-container environment. It is an "all-in-one" deployment that requires the containers to run on the same VM or bare metal host.
+        pulp-admin login -u admin -p admin
 
-1) Pull the images::
 
-        IMAGES=( "aweiteka/pulp-apache" "aweiteka/pulp-qpid" )
-        for i in "${IMAGES[@]}"; do sudo docker pull $i; done
-
-2) Run the orchestration script::
-
-        ./orchestrate.sh
-
+A certificate is downloaded and used on subsequent commands so credentials do not need to be passed in for each command.
 
 
 Pulp Service Structure in Docker with Kubernetes
@@ -92,18 +156,13 @@ Pulp Service Structure in Docker with Kubernetes
 .. image:: images/Pulp_Service_Structure_in_Docker_with_Kubernetes.png
 
 
-To Be Done 04 Aug 2014
-----------------------
-# Outline steps for container deployment. DONE 04 Aug 2014 0009 AEST
-# Mention VM as alternate option, referring to upstream docs.
-# basic script
-# kubernetes (TBA) IMAGE INCLUDED, MORE WORK NEEDED
-
-
 Publishing Docker Images
 ------------------------
 
-Usage::
+The ``pulp-publish-docker`` utility automates the steps necessary to create a docker repository in Pulp, upload images and publish the repository.
+
+
+Usage output::
 
         $ pulp-publish-docker --help
         Usage:
@@ -142,8 +201,11 @@ Usage::
           -p, --publish         Publish repository. May be added to image upload or
                                 used alone.
           -l, --list            List repositories. Used alone.
-        $ docker save tianon/true | pulp-publish-docker --id true --repo tianon/true --publish
-        Repository [true] successfully created
+
+Example publish command::
+
+        $ docker save my/app | pulp-publish-docker --id app --repo my/app --publish
+        Repository [app] successfully created
 
         +----------------------------------------------------------------------+
                                       Unit Upload
@@ -220,6 +282,7 @@ Permissions
 
 Permissions may be assigned to roles to control access. See `API documentation <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>`_ for paths to resources.
 
+.. FIXME: research all the necessary permissiong for roles: admins can do everything except user mgmt; contribs cannot delete repos or do any user mgmt
 Here we create permissions for the "contributors" role so they can create repositories and upload content but cannot delete repositories::
 
         pulp-admin auth permission grant --role-id contributors --resource /repositories -o create -o read -o update -o execute
@@ -245,6 +308,22 @@ Assign user to role::
 
         pulp-admin auth role user add --role-id contributors --login jdev
         pulp-admin auth role user add --role-id repo_admin --login madmin
+
+Test permission assignments.
+
+1) Logout as "admin" user::
+
+        pulp-admin logout
+
+2) Login as "jdev" user::
+
+        pulp-admin login -u jdev
+
+3) Ensure "Joe Developer" can create, upload and publish a repository. Ensure that "Joe Developer" cannot delete repositories or manage users.
+
+.. note::
+
+   Users that require access to all pulp administrative commands should be assigned the "super-users" role.
 
 
 Manage Repositories
@@ -281,7 +360,8 @@ Images may be copied into other repositories for image lifecycle management. Ima
 
         pulp-admin docker repo images --repo-id centos
 
-3) Copy images into the new repository::
+.. FIXME: tag matching syntax not working
+3) Copy all the images with docker tag "centos7" into the new repository::
 
         pulp-admin docker repo copy --from-repo-id centos --to-repo-id centos-prod --match='tag=centos7'
 
