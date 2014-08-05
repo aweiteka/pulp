@@ -48,10 +48,12 @@ Server
 
         sudo systemctl status docker
 
-2) Open TCP ports 80 and 443 to incoming HTTP and HTTPS traffic::
+2) Open TCP ports 80 (HTTP), 443 (HTTPS), 5672 (QPID) and 27017 (MongoDB) to incoming traffic.
 
         sudo firewall-cmd --permanent --add-service http
         sudo firewall-cmd --permanent --add-service https
+        sudo firewall-cmd --permanent --add-port 27017/tcp
+        sudo firewall-cmd --permanent --add-port 5672/tcp
         sudo firewall-cmd --reload
 
 **Server Installation**
@@ -371,16 +373,31 @@ Troubleshooting
 
 See `Troubleshooting Guide <troubleshooting>`_
 
+**Error: Cannot start container <container_id>: port has already been allocated**
+
+If docker returns this error but there are no running containers allocating conflicting ports docker may need to be restarted.::
+
+        sudo systemctl restart docker
+
+**Stale pulp-admin containers**
+
+The ``--rm`` in the pulp-admin alias should remove every pulp-admin container after it stops. However if the container exits prematurely or there is an error the container may not be removed. This command removes all stopped containers::
+
+        sudo docker rm $(docker ps -a -q)
+
+
 Logging
 ^^^^^^^
 
-From host use journald.
+Apache and the pulp workers log to journald. From the container host use ``journalctl``::
+
+        sudo journalctl SYSLOG_IDENTIFIER=pulp + SYSLOG_IDENTIFIER=celery + SYSLOG_IDENTIFIER=httpd
 
 About
-^^^^^
+-----
 
-* based on centos image
-* includes pulp beta repository v2.4
-* includes pulp_docker plugin
+* Based on centos image
+* Includes pulp beta repository v2.4
+* Includes pulp_docker plugin
 
-`Dockerfile Source <https://github.com/aweiteka/pulp-dockerfiles>`_
+View `Dockerfile Source <https://github.com/aweiteka/pulp-dockerfiles>`_
