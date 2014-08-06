@@ -23,23 +23,23 @@ Components
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |* Pulp server                     | (2.4 beta)                                                                                                                                                      |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|* Pulp admin client               | <https://registry.hub.docker.com/u/aweiteka/pulp-admin/>_: remote management client                                                                             |
+|* Pulp admin client               | <https://registry.hub.docker.com/u/aweiteka/pulp-admin/>: remote management client                                                                              |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|* pulp_docker plugin              | <https://github.com/pulp/pulp_docker>_ (unreleased): supports docker content type                                                                               |
+|* pulp_docker plugin              | <https://github.com/pulp/pulp_docker> (unreleased): supports docker content type                                                                                |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|* Crane                           | <https://github.com/pulp/crane>_ (unreleased): partial implementation of the `docker registry protocol <https://docs.docker.com/reference/api/registry_api/>_   |
+|* Crane                           | <https://github.com/pulp/crane> (unreleased): partial implementation of the `docker registry protocol <https://docs.docker.com/reference/api/registry_api/>     |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |* additional tooling (unreleased):| build on Pulp admin client, provides streamlined publishing workflow                                                                                            |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Deployment Options
 ------------------
-There are two options for the deployment of Pulp as a Docker Registry:
+Pulp can be deployed as a Docker registry in two different ways:
 
 1. Pulp as a VM, with Crane as a Docker Container
 2. A multi-container environment
 
-This document focuses on the multi-container environment.
+This document focuses on the setup and configuration of the multi-container environment.
 
 Installation
 ------------
@@ -176,7 +176,7 @@ Pulp Service Structure in Docker with Kubernetes
 ------------------------------------------------
 
 .. image:: images/Pulp_Service_Structure_in_Docker_with_Kubernetes.png
-Test text.
+The above figure details the deployment of the Pulp Service Structure in a Kubernetes Pod.
 
 
 Publishing Docker Images
@@ -306,7 +306,7 @@ Create roles::
 
 Permissions
 ^^^^^^^^^^^
-Assign permissions to roles to control access.  See `API documentation <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>`_ for paths to resources.
+Assign permissions to roles to control access.  See `API documentation <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>` for paths to resources.
 
 .. FIXME: research all the necessary permissions for roles: admins can do everything except user mgmt; contribs cannot delete repos or do any user mgmt
 Here we create permissions for the "contributors" role so they can create repositories and upload content but cannot delete repositories::
@@ -395,7 +395,7 @@ Images may be copied into other repositories for image lifecycle management. Ima
 Troubleshooting
 ---------------
 
-See `Troubleshooting Guide <troubleshooting>`_
+See `Troubleshooting Guide <troubleshooting.rst>`_
 
 **Error: Cannot start container <container_id>: port has already been allocated**
 
