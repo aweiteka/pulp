@@ -166,7 +166,11 @@ Pulp Service Structure in Docker with Kubernetes
 Publishing Docker Images
 ------------------------
 
-The ``pulp-publish-docker`` utility automates the steps necessary to create a docker repository in Pulp, upload images and publish the repository.
+The ``pulp-publish-docker`` utility automates the steps necessary to do the following:
+
+* create a docker repository in Pulp
+* upload images to the docker repository in Pulp 
+* publish the repository
 
 
 Usage output::
