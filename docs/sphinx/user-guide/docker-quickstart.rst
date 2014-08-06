@@ -128,7 +128,7 @@ The ``pulp-admin`` client may be `installed as an RPM <installation.rst>`_ or ru
 
        $ pulp-admin <pulp admin arguments>
 
-The ``pulp-publish-docker`` utility is an initial prototype to automate pushing docker images to the Pulp registry. It is based on the pulp-admin client.
+The ``pulp-publish-docker`` utility is an initial prototype that automates the task of pushing docker images to the Pulp registry. It is based on the ``pulp-admin`` client.
 
 **Setup**
 
