@@ -53,9 +53,7 @@ Server
 
         $ sudo systemctl status docker
 
-2) Open the following ports to incoming traffic:
-
-::
+2) Open the following ports to incoming traffic::
 
         $ sudo firewall-cmd --permanent --add-service http
         $ sudo firewall-cmd --permanent --add-service https
@@ -63,8 +61,6 @@ Server
         $ sudo firewall-cmd --permanent --add-port 5672/tcp
         $ sudo firewall-cmd --reload
 
-Ports Opened
-------------
 * TCP port 80 (HTTP)
 * 443 (HTTPS)
 * 5672 (QPID)
