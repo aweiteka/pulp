@@ -61,7 +61,6 @@ Server
 * 27017 (MongoDB)
 
 ::
-
         $ sudo firewall-cmd --permanent --add-service http
         $ sudo firewall-cmd --permanent --add-service https
         $ sudo firewall-cmd --permanent --add-port 27017/tcp
