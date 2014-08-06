@@ -5,15 +5,15 @@ Pulp 2.4 supports docker content and can serve as a docker registry.
 
 Why Pulp As a Docker Registry?
 ------------------------------
-
+Pulp provides the following:
 .. FIXME: links
-* Separation of admin (pulp backend client and API) and end-user interface
+* Separation of administrator interfaces (pulp backend client and API) and end-user interface
 * Role-based access control (RBAC) with LDAP support
-* Enables pushing content to public-facing servers while management interface behind firewall
-* Sync content accross an organization using `nodes <https://pulp-user-guide.readthedocs.org/en/latest/nodes.html>`_.
+* Ability to push content to public-facing servers while keeping the management interface behind a firewall
+* Synchronization of content accross an organization using `nodes <https://pulp-user-guide.readthedocs.org/en/latest/nodes.html>`_.
 * `Well-documented API <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>`_
 * `Event-based notifications <https://pulp-dev-guide.readthedocs.org/en/latest/integration/events/index.html>`_ (http/amqp/email) enables CI workflows and viewing history
-* Service-oriented architecture (SOA) enables scaling
+* Service-oriented architecture (SOA) that enables scaling
 
 
 Components
