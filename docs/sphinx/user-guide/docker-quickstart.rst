@@ -304,10 +304,9 @@ Create roles::
 
 Permissions
 ^^^^^^^^^^^
+Assign permissions to roles to control access.  See `API documentation <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>`_ for paths to resources.
 
-Permissions may be assigned to roles to control access. See `API documentation <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>`_ for paths to resources.
-
-.. FIXME: research all the necessary permissiong for roles: admins can do everything except user mgmt; contribs cannot delete repos or do any user mgmt
+.. FIXME: research all the necessary permissions for roles: admins can do everything except user mgmt; contribs cannot delete repos or do any user mgmt
 Here we create permissions for the "contributors" role so they can create repositories and upload content but cannot delete repositories::
 
         $ pulp-admin auth permission grant --role-id contributors --resource /repositories -o create -o read -o update -o execute
@@ -347,8 +346,7 @@ Test permission assignments.
 
 3) Ensure "Joe Developer" can create, upload and publish a repository. Ensure that "Joe Developer" cannot delete repositories or manage users.
 
-.. note::
-
+.. NOTE::
    Users that require access to all pulp administrative commands should be assigned the "super-users" role.
 
 
