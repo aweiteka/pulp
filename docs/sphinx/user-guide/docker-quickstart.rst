@@ -20,12 +20,17 @@ Components
 ----------
 
 .. FIXME: make this a table?
-* Pulp server (2.4 beta)
-* `Pulp admin client <https://registry.hub.docker.com/u/aweiteka/pulp-admin/>`_: remote management client
-* `pulp_docker plugin <https://github.com/pulp/pulp_docker>`_ (unreleased): supports docker content type
-* `Crane <https://github.com/pulp/crane>`_ (unreleased): partial implementation of the `docker registry protocol <https://docs.docker.com/reference/api/registry_api/>`_
-* additional tooling (unreleased): build on Pulp admin client, provides streamlined publishing workflow
-
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|* Pulp server                     | (2.4 beta)                                                                                                                                                      |
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|* `Pulp admin client              | <https://registry.hub.docker.com/u/aweiteka/pulp-admin/>`_: remote management client                                                                            |
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|* `pulp_docker plugin             | <https://github.com/pulp/pulp_docker>`_ (unreleased): supports docker content type                                                                              |
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|* `Crane                          | <https://github.com/pulp/crane>`_ (unreleased): partial implementation of the `docker registry protocol <https://docs.docker.com/reference/api/registry_api/>`_ |
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|* additional tooling (unreleased):| build on Pulp admin client, provides streamlined publishing workflow                                                                                            |
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Deployment Options
 ------------------
