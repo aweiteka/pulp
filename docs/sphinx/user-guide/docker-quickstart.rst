@@ -119,7 +119,7 @@ The Pulp server is packaged as a multi-container environment. It is a basic "all
 .. note::
 
    The pulp-data container exits immediately. It is a dependent volume container referenced by
-   ``--volumes-from``. It persist as a shared volume while the other containers are running.
+   ``--volumes-from``. It persists as a shared volume while the other containers are running.
 
 
 Remote Client Tools
