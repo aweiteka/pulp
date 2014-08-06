@@ -166,6 +166,11 @@ The ``pulp-publish-docker`` utility is an initial prototype to automate pushing 
 
 A certificate is downloaded and used on subsequent commands so credentials do not need to be passed in for each command.
 
+5) Change the default admin password::
+
+        $ pulp-admin auth user update --login admin -p
+        Enter new password for user [admin] : ********
+
 
 Pulp Service Structure in Docker with Kubernetes
 ------------------------------------------------
@@ -178,7 +183,7 @@ Publishing Docker Images
 The ``pulp-publish-docker`` utility automates the steps necessary to do the following:
 
 * create a docker repository in Pulp
-* upload images to the docker repository in Pulp 
+* upload images to the docker repository in Pulp
 * publish the repository
 
 
