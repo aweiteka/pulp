@@ -49,12 +49,18 @@ Server
 
 **Host Configuration**
 
-1) Ensure docker daemon is running::
+1) Make sure that the docker daemon is running::
 
         sudo systemctl status docker
 
-2) Open TCP ports 80 (HTTP), 443 (HTTPS), 5672 (QPID) and 27017 (MongoDB) to incoming traffic.
+2) Open the following ports to incoming traffic:
 
+* TCP port 80 (HTTP)
+* 443 (HTTPS)
+* 5672 (QPID)
+* 27017 (MongoDB) 
+
+::
         sudo firewall-cmd --permanent --add-service http
         sudo firewall-cmd --permanent --add-service https
         sudo firewall-cmd --permanent --add-port 27017/tcp
