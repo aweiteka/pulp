@@ -346,7 +346,8 @@ Test permission assignments.
 
 3) Ensure "Joe Developer" can create, upload and publish a repository. Ensure that "Joe Developer" cannot delete repositories or manage users.
 
-.. NOTE:: Users that require access to all pulp administrative commands should be assigned the "super-users" role.
+.. NOTE:: 
+   - Users that require access to all pulp administrative commands should be assigned the "super-users" role.
 
 
 Manage Repositories
