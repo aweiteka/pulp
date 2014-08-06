@@ -125,7 +125,7 @@ The Pulp server is packaged as a multi-container environment. It is a basic "all
 Remote Client Tools
 ^^^^^^^^^^^^^^^^^^^
 
-The ``pulp-admin`` client may be `installed as an RPM <installation>`_ or run as a container. To run as a container an alias is created for the ``docker run`` command. The ``ENTRYPOINT`` for the container is the ``pulp-admin`` executable, enabling the user to pass commands to the alias as arguments. For example::
+The ``pulp-admin`` client may be `installed as an RPM <installation.rst>`_ or run as a container. To run as a container an alias is created for the ``docker run`` command. The ``ENTRYPOINT`` for the container is the ``pulp-admin`` executable, enabling the user to pass commands to the alias as arguments. For example::
 
        $ pulp-admin <pulp admin arguments>
 

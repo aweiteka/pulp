@@ -1,21 +1,21 @@
 Installation
 ============
 
-Pulp operates with three main components that get installed potentially on different
-machines.
+Pulp requires three main components. Those components can be installed on the same machine, 
+or on different machines. 
 
 Server
   This is the main application server that stores data and distributes content.
 
 Agent
-  This component runs on consumers and communicates with the server to provide remote content
+  This component runs on consumers. It communicates with the server to provide remote content
   management.
 
 Client
-  This is a command line component that comes as two pieces: admin-client,
-  which manages the server; and consumer-client, which manages a consumer's relationship
-  to the server. admin-client can be run from any machine that can access the server's
-  REST API, but the consumer-client must be run on a consumer.
+  This is a command line component that comes as two pieces: ``admin-client``,
+  which manages the server; and ``consumer-client``, which manages a consumer's relationship
+  to the server. ``admin-client`` can be run from any machine that can access the server's
+  REST API, but ``consumer-client`` must be run on a consumer.
 
 Additional steps are needed for upgrading Pulp 1.1 installations. More information can be found
 in the :doc:`v1_upgrade` section of this guide.
