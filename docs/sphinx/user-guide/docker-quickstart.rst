@@ -12,7 +12,7 @@ Pulp provides the following:
 * Ability to push content to public-facing servers while keeping the management interface behind a firewall
 * Synchronization of content accross an organization using `nodes <https://pulp-user-guide.readthedocs.org/en/latest/nodes.html>`_.
 * `Well-documented API <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>`_
-* `Event-based notifications <https://pulp-dev-guide.readthedocs.org/en/latest/integration/events/index.html>`_ (http/amqp/email) enables CI workflows and viewing history
+* `Event-based notifications <https://pulp-dev-guide.readthedocs.org/en/latest/integration/events/index.html>` (http/amqp/email) enables CI workflows and viewing history
 * Service-oriented architecture (SOA) that enables scaling
 
 
@@ -58,9 +58,10 @@ Server
 * TCP port 80 (HTTP)
 * 443 (HTTPS)
 * 5672 (QPID)
-* 27017 (MongoDB) 
+* 27017 (MongoDB)
 
 ::
+
         sudo firewall-cmd --permanent --add-service http
         sudo firewall-cmd --permanent --add-service https
         sudo firewall-cmd --permanent --add-port 27017/tcp
