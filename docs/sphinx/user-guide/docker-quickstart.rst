@@ -27,7 +27,7 @@ Components
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |* pulp_docker plugin              | <https://github.com/pulp/pulp_docker> (unreleased): supports docker content type                                                                                |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|* Crane                           | <https://github.com/pulp/crane> (unreleased): partial implementation of the `docker registry protocol <https://docs.docker.com/reference/api/registry_api/>     |
+|* Crane                           | <https://github.com/pulp/crane> (unreleased): partial implementation of the docker registry protocol <https://docs.docker.com/reference/api/registry_api/>     |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |* additional tooling (unreleased):| build on Pulp admin client, provides streamlined publishing workflow                                                                                            |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
