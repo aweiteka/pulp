@@ -49,7 +49,7 @@ Server
 
 **Host Configuration**
 
-1) Make sure that the docker daemon is running::
+1) Make sure that the docker daemon is running and configured to run on startup::
 
         $ sudo systemctl status docker
 
@@ -71,18 +71,15 @@ Server
 
 The Pulp server is packaged as a multi-container environment. It is a basic "all-in-one" deployment that requires the containers to run on the same VM or bare metal host.
 
-1) Pull the images::
+1) Download the installer::
 
-        IMAGES=( "aweiteka/pulp-crane-allinone" \
-                 "aweiteka/pulp-worker" \
-                 "aweiteka/pulp-qpid" \
-                 "aweiteka/pulp-mongodb" \
-                 "aweiteka/pulp-apache" \
-                 "aweiteka/pulp-data" \
-                 "aweiteka/pulp-centosbase" )
-        $ for i in "${IMAGES[@]}"; do sudo docker pull $i; done
+        $ curl -O https://github.com/aweiteka/pulp-dockerfiles/tree/master/centos/install_server.sh
 
-2) View the images::
+2) Run the installer::
+
+        $ bash install_server.sh <host_ip_address>
+
+3) View the images::
 
         $ sudo docker images
 
@@ -94,11 +91,6 @@ The Pulp server is packaged as a multi-container environment. It is a basic "all
         aweiteka/pulp-apache           latest              367c5f169f1d        28 hours ago        683 MB
         aweiteka/pulp-centosbase       latest              e2889f4dca42        4 days ago          604.8 MB
         aweiteka/pulp-crane-allinone   latest              b81c502f6703        11 days ago         442.7 MB
-
-3) Download the orchestration script and run it::
-
-        $ curl -O https://raw.githubusercontent.com/aweiteka/pulp-dockerfiles/master/centos/orchestrate.sh
-        $ sudo bash orchestrate.sh aweiteka
 
 4) View all running and stopped containers::
 
@@ -124,51 +116,74 @@ The Pulp server is packaged as a multi-container environment. It is a basic "all
 Remote Client Tools
 ^^^^^^^^^^^^^^^^^^^
 
-The ``pulp-admin`` client may be `installed as an RPM <installation.rst>`_ or run as a container. To run as a container an alias is created for the ``docker run`` command. The ``ENTRYPOINT`` for the container is the ``pulp-admin`` executable, enabling the user to pass commands to the alias as arguments. For example::
-
-       $ pulp-admin <pulp admin arguments>
+The ``pulp-admin`` client may be `installed as an RPM <installation.rst>`_ or run as a container.
 
 The ``pulp-publish-docker`` utility is an initial prototype that automates the task of pushing docker images to the Pulp registry. It is based on the ``pulp-admin`` client.
 
 **Setup**
 
-1) Create the ``~/.pulp`` client configuration directory and update the SELinux context::
+The ``install_client.sh`` script installs the required client components.::
 
-        $ mkdir ~/.pulp
-        $ chcon -Rvt svirt_sandbox_file_t ~/.pulp
+1) Download the installer::
 
-2) Create file ``~/.pulp/admin.conf`` and pulp server hostname::
+        $ curl -O https://github.com/aweiteka/pulp-dockerfiles/tree/master/centos/install_client.sh
 
-        [server]
-        host = pulp-server.example.com
+2) Run the installer::
 
-3) Pull the images::
+        $ sh install_client.sh pulp-registry.example.com
+        Pulling docker images
+        Pulling repository aweiteka/pulp-admin
+        8a01d78f4c70: Download complete
+        511136ea3c5a: Download complete
+        34e94e67e63a: Download complete
+        0c752394b855: Download complete
+        72c04dd1c65f: Download complete
+        2c5d7f2b265f: Download complete
+        4eeab9fb0e59: Download complete
+        cf74bfddd666: Download complete
+        5e1c88247ced: Download complete
+        fb7de7f7cf40: Download complete
+        e013d95b0414: Download complete
+        Pulling repository aweiteka/pulp-publish-docker
+        7a377a6584f0: Download complete
+        511136ea3c5a: Download complete
+        34e94e67e63a: Download complete
+        0c752394b855: Download complete
+        72c04dd1c65f: Download complete
+        2c5d7f2b265f: Download complete
+        4eeab9fb0e59: Download complete
+        cf74bfddd666: Download complete
+        5e1c88247ced: Download complete
+        fb7de7f7cf40: Download complete
+        e013d95b0414: Download complete
+        8a01d78f4c70: Download complete
+        bfa62e234ad0: Download complete
+        6bb39d1d3ead: Download complete
+        Setting up ~/.pulp directory
+        changing security context of ‘/home/aweiteka/.pulp’
+        Create /tmp/docker_uploads
+        changing security context of ‘/tmp/docker_uploads’
+        Update ~/.bashrc with aliases
+        2 aliases created
+        Login with command "pulp-admin login -u admin -p admin"
 
-        $ sudo docker pull aweiteka/pulp-admin
-        $ sudo docker pull aweiteka/pulp-publish-docker
 
-4) Create aliases for ``pulp-admin`` and ``pulp-publish-docker``. For persistence, update your ``~/.bashrc`` file with the line below and run ``source ~/.bashrc``::
-
-        $ alias pulp-admin="sudo docker run --rm -t -v ~/.pulp:/.pulp -v /tmp/docker_uploads/:/tmp/docker_uploads/ aweiteka/pulp-admin"
-        $ alias pulp-publish-docker="sudo docker run --rm -i -t -v ~/.pulp:/.pulp -v /tmp/docker_uploads/:/tmp/docker_uploads/ aweiteka/pulp-publish-docker"
-
-.. note::
-
-   A new container is created each time the pulp-admin runs. The ``--rm`` removes the ephemeral
-   container after exiting. This adds a few seconds to execution and is optional.
-
-
-4) Login using the remote pulp-admin client. Default username is "admin". Default password is "admin"::
+3) Login using the remote pulp-admin client. Default username is "admin". Default password is "admin"::
 
         $ pulp-admin login -u admin -p admin
 
 
 A certificate is downloaded and used on subsequent commands so credentials do not need to be passed in for each command.
 
-5) Change the default admin password::
+4) Change the default admin password::
 
         $ pulp-admin auth user update --login admin -p
         Enter new password for user [admin] : ********
+
+.. note::
+
+   A new container is created each time the pulp-admin runs. The ``--rm`` removes the ephemeral
+   container after exiting. This adds a few seconds to execution and is optional.
 
 
 Pulp Service Structure in Docker with Kubernetes
@@ -347,7 +362,7 @@ Test permission assignments.
 
 3) Ensure "Joe Developer" can create, upload and publish a repository. Ensure that "Joe Developer" cannot delete repositories or manage users.
 
-.. NOTE:: 
+.. NOTE::
 Users that require access to all pulp administrative commands should be assigned the "super-users" role.
 
 
