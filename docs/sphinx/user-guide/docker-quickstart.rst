@@ -190,11 +190,11 @@ A certificate is downloaded and used on subsequent commands so credentials do no
    container after exiting. This adds a few seconds to execution and is optional.
 
 
-Pulp Service Structure in Docker with Kubernetes
-------------------------------------------------
+Pulp Service Architecture
+-------------------------
 
-.. image:: images/images/pulp_component_architecture.png
-The above figure details the deployment of the Pulp Service Structure in a Kubernetes Pod.
+.. image:: images/pulp_component_architecture.png
+The above figure details the deployment of the Pulp Service architecture.
 
 
 Publishing Docker Images
