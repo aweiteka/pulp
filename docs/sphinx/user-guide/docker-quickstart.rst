@@ -134,7 +134,7 @@ The ``install_client.sh`` script installs the required client components.::
 
 2) Run the installer::
 
-        $ sh install_client.sh pulp-registry.example.com
+        $ bash install_client.sh pulp-registry.example.com
         Pulling docker images
         Pulling repository aweiteka/pulp-admin
         8a01d78f4c70: Download complete
@@ -165,8 +165,8 @@ The ``install_client.sh`` script installs the required client components.::
         6bb39d1d3ead: Download complete
         Setting up ~/.pulp directory
         changing security context of ‘/home/aweiteka/.pulp’
-        Create /tmp/docker_uploads
-        changing security context of ‘/tmp/docker_uploads’
+        Create /run/docker_uploads
+        changing security context of ‘/run/docker_uploads’
         Update ~/.bashrc with aliases
         2 aliases created
         Login with command "pulp-admin login -u admin -p admin"
@@ -213,10 +213,10 @@ Usage output::
         Usage:
             Upload (2 methods): will create repo if needed, optional publish
               STDIN from "docker save"
-              docker save <repo> | ./pulp_docker_util.py --repo <repo> [OPTIONS]
+              docker save <docker_repo> | pulp_docker_util.py --id <pulp_repo> [OPTIONS]
 
               from previously saved tar file
-              ./pulp_docker_util.py --repo <repo> -f </full/path/to/image.tar> [OPTIONS]
+              pulp_docker_util --id <pulp_repo> -f </run/docker_uploads/image.tar> [OPTIONS]
 
             Create repo only (do not upload or publish):
             ./pulp_docker_util.py --repo <repo> [OPTIONS]
