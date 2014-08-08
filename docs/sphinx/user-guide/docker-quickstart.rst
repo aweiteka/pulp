@@ -58,7 +58,7 @@ This document focuses on the setup and configuration of the multi-container envi
 +----------------------------------------------------------------+
 | **NOTE**                                                       |
 | If you prefer a more traditional virtual-machine-based         |
-| installation, follow the instructions linked in above, in the  |
+| installation, follow the instructions linked to above, in the  |
 | link indicated by the words "Pulp as a VM, with Crane as a     |
 | Docker Container".                                             |
 +----------------------------------------------------------------+
