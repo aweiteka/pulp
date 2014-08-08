@@ -42,7 +42,7 @@ Components
 
 Pulp as a Docker repository is based on a CentOS image.
 
-Click here to see the Dockerfile: `Dockerfile Source <https://github.com/aweiteka/pulp-dockerfiles>`_
+Click here to see the repository containing Dockerfiles for Pulp: `Dockerfile Source <https://github.com/aweiteka/pulp-dockerfiles>`_
 
 Pulp Service Architecture
 -------------------------
