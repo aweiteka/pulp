@@ -50,10 +50,18 @@ Deployment Options
 ------------------
 Pulp can be deployed as a Docker registry in two different ways:
 
-1. Pulp as a VM, with Crane as a Docker Container
+1. `Pulp as a VM, with Crane as a Docker Container <https://pulp-user-guide.readthedocs.org/en/latest/installation.html>`_
 2. A multi-container environment
 
 This document focuses on the setup and configuration of the multi-container environment.
+
++----------------------------------------------------------------+
+| **NOTE**                                                       |
+| If you prefer a more traditional virtual-machine-based         |
+| installation, follow the instructions linked in above, in the  |
+| link indicated by the words "Pulp as a VM, with Crane as a     |
+| Docker Container".                                             |
++----------------------------------------------------------------+
 
 Installation
 ------------
