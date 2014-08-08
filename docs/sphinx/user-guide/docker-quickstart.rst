@@ -114,8 +114,8 @@ The Pulp server is packaged as a multi-container environment. It is a basic "all
 +----------------------------------------------------------------------------------------------+
 | **NOTE**                                                                                     |
 |                                                                                              |
-|  The pulp-data container exits immediately. It is a dependent volume container referenced by |
-|  ``--volumes-from``. It persists as a shared volume while the other containers are running.  |
+| The pulp-data container exits immediately. It is a dependent volume container referenced by  |
+| ``--volumes-from``. It persists as a shared volume while the other containers are running.   |
 +----------------------------------------------------------------------------------------------+
 
 
@@ -174,12 +174,12 @@ The ``install_client.sh`` script installs the required client components.::
         Login with command "pulp-admin login -u admin -p admin"
 
 
-3) Login using the remote pulp-admin client. Default username is "admin". Default password is "admin"::
+3) Log in using the remote pulp-admin client. Default username is "admin". Default password is "admin"::
 
         $ pulp-admin login -u admin -p admin
 
 
-A certificate is downloaded and used on subsequent commands so credentials do not need to be passed in for each command.
+A certificate is downloaded and used on subsequent commands, so credentials do not need to be passed in for each command.
 
 4) Change the default admin password::
 
