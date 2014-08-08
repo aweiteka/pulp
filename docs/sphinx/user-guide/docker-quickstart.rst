@@ -9,9 +9,9 @@ Pulp provides the following:
 
 * Separation of administrator interfaces (pulp backend client and API) and end-user interface
 * Role-based access control (RBAC) with LDAP support
-* Ability to push content to public-facing servers while keeping the management interface behind a firewall
+* The ability to push content to public-facing servers while keeping the management interface behind a firewall
 * Synchronization of content accross an organization using `nodes <https://pulp-user-guide.readthedocs.org/en/latest/nodes.html>`_.
-* `Well-documented API <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>`_
+* `Well-documented API https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html
 * `Event-based notifications <https://pulp-dev-guide.readthedocs.org/en/latest/integration/events/index.html>` (http/amqp/email) enables CI workflows and viewing history
 * Service-oriented architecture (SOA) that enables scaling
 
