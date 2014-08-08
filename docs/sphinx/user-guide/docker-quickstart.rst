@@ -40,6 +40,10 @@ Components
 |* additional tooling (unreleased):| build on Pulp admin client, provides streamlined publishing workflow                                                                                            |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
+Pulp as a Docker repository is based on a CentOS image.
+
+Click here to see the Dockerfile: `Dockerfile Source <https://github.com/aweiteka/pulp-dockerfiles>`_
+
 Pulp Service Architecture
 -------------------------
 
@@ -457,11 +461,3 @@ Apache and the pulp workers log to journald. From the container host use ``journ
 
         $ sudo journalctl SYSLOG_IDENTIFIER=pulp + SYSLOG_IDENTIFIER=celery + SYSLOG_IDENTIFIER=httpd
 
-About
------
-
-* Based on centos image
-* Includes pulp beta repository v2.4
-* Includes pulp_docker plugin
-
-View `Dockerfile Source <https://github.com/aweiteka/pulp-dockerfiles>`_
