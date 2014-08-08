@@ -29,12 +29,12 @@ Components
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | pulp_docker plugin               | adds support for docker content type (`unreleased <https://github.com/pulp/pulp_docker>`_)                                                                      |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Crane                            | partial implementation of the `docker registry protocol <https://docs.docker.com/reference/api/registry_api/>`_ (`unreleased <https://github.com/pulp/crane>`_  |
+| Crane                            | partial implementation of the `docker registry protocol <https://docs.docker.com/reference/api/registry_api/>`_ (`unreleased <https://github.com/pulp/crane>`_) |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | pulp-publish-docker              | prototype tooling based on pulp-admin client providing streamlined publishing workflow                                                                          |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-Pulp as a Docker repository is based on the CentOS 7 image.
+Pulp packaged as a set of Docker images is based on the CentOS 7 image.
 
 Click here to access the repository containing Dockerfiles for Pulp: `Dockerfile Source <https://github.com/aweiteka/pulp-dockerfiles>`_
 
@@ -71,20 +71,20 @@ Server
 
 1) Make sure that the docker daemon is running and configured to run on startup::
 
-        $ sudo systemctl status docker
+2) Open the following ports to incoming traffic.
 
-2) Open the following ports to incoming traffic::
+* TCP port 80 (HTTP)
+* 443 (HTTPS)
+* 5672 (QPID)
+* 27017 (MongoDB)
+
+Example commands using firewall-cmd::
 
         $ sudo firewall-cmd --permanent --add-service http
         $ sudo firewall-cmd --permanent --add-service https
         $ sudo firewall-cmd --permanent --add-port 27017/tcp
         $ sudo firewall-cmd --permanent --add-port 5672/tcp
         $ sudo firewall-cmd --reload
-
-* TCP port 80 (HTTP)
-* 443 (HTTPS)
-* 5672 (QPID)
-* 27017 (MongoDB)
 
 
 **Server Installation**
@@ -156,30 +156,11 @@ The ``install_client.sh`` script installs the required client components.::
         Pulling docker images
         Pulling repository aweiteka/pulp-admin
         8a01d78f4c70: Download complete
-        511136ea3c5a: Download complete
-        34e94e67e63a: Download complete
-        0c752394b855: Download complete
-        72c04dd1c65f: Download complete
-        2c5d7f2b265f: Download complete
-        4eeab9fb0e59: Download complete
-        cf74bfddd666: Download complete
-        5e1c88247ced: Download complete
-        fb7de7f7cf40: Download complete
+        ...
         e013d95b0414: Download complete
         Pulling repository aweiteka/pulp-publish-docker
         7a377a6584f0: Download complete
-        511136ea3c5a: Download complete
-        34e94e67e63a: Download complete
-        0c752394b855: Download complete
-        72c04dd1c65f: Download complete
-        2c5d7f2b265f: Download complete
-        4eeab9fb0e59: Download complete
-        cf74bfddd666: Download complete
-        5e1c88247ced: Download complete
-        fb7de7f7cf40: Download complete
-        e013d95b0414: Download complete
-        8a01d78f4c70: Download complete
-        bfa62e234ad0: Download complete
+        ...
         6bb39d1d3ead: Download complete
         Setting up ~/.pulp directory
         changing security context of ‘/home/aweiteka/.pulp’
@@ -189,7 +170,7 @@ The ``install_client.sh`` script installs the required client components.::
         2 aliases created
         Login with command "pulp-admin login -u admin -p admin"
 
-3) :ref:`Log in <log-in>` using the remote pulp-admin client. In this example, the default username is "admin" and the default password is "admin". Your username and your password will probably not be "admin"::
+3) :ref:`Log in <log-in>` using the remote pulp-admin client. In this example, the default username is "admin" and the default password is "admin". Your username and password will probably not be "admin"::
 
         $ pulp-admin login -u admin -p admin
 
@@ -228,47 +209,7 @@ The ``pulp-publish-docker`` utility automates the steps necessary to do the foll
 +----------------------------------------------------------------------------------------------+
 
 
-Usage output::
-
-        $ pulp-publish-docker --help
-        Usage:
-            Upload (2 methods): will create repo if needed, optional publish
-              STDIN from "docker save"
-              docker save <docker_repo> | pulp_docker_util.py --id <pulp_repo> [OPTIONS]
-
-              from previously saved tar file
-              pulp_docker_util --id <pulp_repo> -f </run/docker_uploads/image.tar> [OPTIONS]
-
-            Create repo only (do not upload or publish):
-            ./pulp_docker_util.py --repo <repo> [OPTIONS]
-
-            Publish existing repo:
-            ./pulp_docker_util.py --repo <repo> --publish
-
-            List repos:
-            ./pulp_docker_util.py --list
-
-        Options:
-          --version             show program's version number and exit
-          -h, --help            show this help message and exit
-          -i ID, --id=ID        Pulp repository ID, required for most pulp commands.
-                                Only alphanumeric, ., -, and _ allowed
-          -r REPO, --repo=REPO  Docker repository name for 'docker pull <my/registry>'.
-                                If not specified the Pulp ID will be used
-          -d DESCRIPTION, --description=DESCRIPTION
-                                Pulp repository description
-          -n DISPLAY_NAME, --name=DISPLAY_NAME
-                                Pulp repository display name
-          -u URL, --url=URL     The URL that will be used when generating the
-                                redirect. Defaults to pulp server,
-                                https://<pulp_server>/pulp/docker/<repo_id>
-          -f FILENAME, --file=FILENAME
-                                Full path to image tarball for upload
-          -p, --publish         Publish repository. May be added to image upload or
-                                used alone.
-          -l, --list            List repositories. Used alone.
-
-Example publish command::
+Upload and publish a docker image::
 
         $ docker save my/app | pulp-publish-docker --id app --repo my/app --publish
         Repository [app] successfully created
@@ -328,6 +269,49 @@ Example publish command::
 
         Task Succeeded
 
+The publish command also accepts a previously saved docker image. For example::
+
+        pulp-publish-docker --id app --repo my/app --file /run/docker_uploads/my-app.tar --publish
+
+See help output for complete options::
+
+        $ pulp-publish-docker --help
+        Usage:
+            Upload (2 methods): will create repo if needed, optional publish
+              STDIN from "docker save"
+              docker save <docker_repo> | pulp_docker_util.py --id <pulp_repo> [OPTIONS]
+
+              from previously saved tar file
+              pulp_docker_util --id <pulp_repo> -f </run/docker_uploads/image.tar> [OPTIONS]
+
+            Create repo only (do not upload or publish):
+            ./pulp_docker_util.py --repo <repo> [OPTIONS]
+
+            Publish existing repo:
+            ./pulp_docker_util.py --repo <repo> --publish
+
+            List repos:
+            ./pulp_docker_util.py --list
+
+        Options:
+          --version             show program's version number and exit
+          -h, --help            show this help message and exit
+          -i ID, --id=ID        Pulp repository ID, required for most pulp commands.
+                                Only alphanumeric, ., -, and _ allowed
+          -r REPO, --repo=REPO  Docker repository name for 'docker pull <my/registry>'.
+                                If not specified the Pulp ID will be used
+          -d DESCRIPTION, --description=DESCRIPTION
+                                Pulp repository description
+          -n DISPLAY_NAME, --name=DISPLAY_NAME
+                                Pulp repository display name
+          -u URL, --url=URL     The URL that will be used when generating the
+                                redirect. Defaults to pulp server,
+                                https://<pulp_server>/pulp/docker/<repo_id>
+          -f FILENAME, --file=FILENAME
+                                Full path to image tarball for upload
+          -p, --publish         Publish repository. May be added to image upload or
+                                used alone.
+          -l, --list            List repositories. Used alone.
 
 
 Repository and server management
@@ -335,25 +319,25 @@ Repository and server management
 
 The ``pulp-admin`` client is required to manage the pulp server.
 
-In the example below, we create two roles: "contributors" and "repo_admin".
-
 Roles
 ^^^^^
 
-Create roles::
+In the example below, we create two roles: "contributors" and "repo_admin"::
 
-        $ pulp-admin auth role create --role-id contributors --description "content contributors"
+        $ pulp-admin auth role create --role-id contributor --description "content contributors"
         $ pulp-admin auth role create --role-id repo_admin --description "Repository management"
 
 Permissions
 ^^^^^^^^^^^
-Assign permissions to roles to control access.  See `API documentation <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>` for paths to resources.
+Permissions must be assigned to roles to enable access.  See `API documentation <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>` for paths to resources.
 
-.. FIXME: research all the necessary permissions for roles: admins can do everything except user mgmt; contribs cannot delete repos or do any user mgmt
 Here we create permissions for the "contributors" role so they can create repositories and upload content but cannot delete repositories::
 
-        $ pulp-admin auth permission grant --role-id contributors --resource /repositories -o create -o read -o update -o execute
-        $ pulp-admin auth permission grant --role-id repo_admin --resource /repositories -o create -o read -o update -o execute
+        $ pulp-admin auth permission grant --role-id contributor --resource /repositories -o create -o read -o update -o execute
+        $ pulp-admin auth permission grant --role-id contributor --resource /repositories -o create -o read -o update -o execute
+        $ pulp-admin auth permission grant --role-id contributor --resource /content/uploads -o create -o update
+        $ pulp-admin auth permission grant --role-id repo_admin --resource /repositories -o create -o read -o update -o delete -o execute
+        $ pulp-admin auth permission grant --role-id repo_admin --resource /content/uploads -o create -o update
 
 Users
 ^^^^^
@@ -374,7 +358,7 @@ Create a repository admin user. You will be prompted for a password::
 
 Assign user to role::
 
-        $ pulp-admin auth role user add --role-id contributors --login jdev
+        $ pulp-admin auth role user add --role-id contributor --login jdev
         $ pulp-admin auth role user add --role-id repo_admin --login madmin
 
 Test permission assignments.
@@ -398,6 +382,15 @@ Test permission assignments.
 
 Manage Repositories
 ^^^^^^^^^^^^^^^^^^^
+
+Sync
+++++
+
+Repositories may be synced from a remote source. This enables caching of select public content behind a firewall.
+
+        $ pulp-admin docker repo sync --repo-id rhel7 --url registry.access.redhat.com --remote-repo rhel7
+
+This creates a pulp repository named "rhel7" with the rhel7 images from Red Hat.
 
 Groups
 ++++++
@@ -430,10 +423,13 @@ Images may be copied into other repositories for image lifecycle management. Ima
 
         $ pulp-admin docker repo images --repo-id centos
 
-.. FIXME: tag matching syntax not working
-3) Copy all the images with docker tag "centos7" into the new repository::
+3) Copy all the images into the new repository::
 
-        $ pulp-admin docker repo copy --from-repo-id centos --to-repo-id centos-prod --match='tag=centos7'
+        $ pulp-admin docker repo copy --from-repo-id centos --to-repo-id centos-prod
+
+4) Publish the centos-prod repository::
+
+        $ pulp-admin docker repo publish --repo-id centos-prod
 
 
 Troubleshooting
