@@ -368,6 +368,7 @@ Test permission assignments.
 
 +--------------------------------------------------------------------------------------------------------+
 |**NOTE**                                                                                                |
+|                                                                                                        |
 |Users that require access to all pulp administrative commands should be assigned the "super-users" role.|
 +--------------------------------------------------------------------------------------------------------+
 
