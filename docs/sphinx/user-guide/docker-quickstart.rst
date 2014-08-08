@@ -111,10 +111,12 @@ The Pulp server is packaged as a multi-container environment. It is a basic "all
         80d80664abfd        aweiteka/pulp-mongodb:latest          /usr/bin/mongod --qu   39 seconds ago      Up 39 seconds  0.0.0.0:27017->27017/tcp        pulp-mongodb            
         137fbd04c73a        aweiteka/pulp-data:latest             /run.sh                40 seconds ago      Exited (0) 39 seconds ago                      pulp-data       
 
-.. note::
-
-   The pulp-data container exits immediately. It is a dependent volume container referenced by
-   ``--volumes-from``. It persists as a shared volume while the other containers are running.
++----------------------------------------------------------------------------------------------+
+| **NOTE**                                                                                     |
+|                                                                                              |
+|  The pulp-data container exits immediately. It is a dependent volume container referenced by |
+|  ``--volumes-from``. It persists as a shared volume while the other containers are running.  |
++----------------------------------------------------------------------------------------------+
 
 
 Remote Client Tools
@@ -184,10 +186,12 @@ A certificate is downloaded and used on subsequent commands so credentials do no
         $ pulp-admin auth user update --login admin -p
         Enter new password for user [admin] : ********
 
-.. note::
-
-   A new container is created each time the pulp-admin runs. The ``--rm`` removes the ephemeral
-   container after exiting. This adds a few seconds to execution and is optional.
++----------------------------------------------------------------------------------------------+
+| **NOTE**                                                                                     |
+|                                                                                              |
+| A new container is created each time the pulp-admin runs. The ``--rm`` removes the ephemeral |
+| container after exiting. This adds a few seconds to execution and is optional.               |
++----------------------------------------------------------------------------------------------+
 
 
 Pulp Service Architecture
