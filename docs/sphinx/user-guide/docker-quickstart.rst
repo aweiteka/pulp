@@ -1,6 +1,10 @@
 Pulp Docker Registry Quickstart Guide
 =====================================
 
+This document explains how to use Pulp as a Docker registry. Its intended audience is Independent Software Vendors and Enterprise users who need to know how to use Pulp as a Docker registry.
+
+Pulp is a content distribution network that facilitates the management of repositories of content. Pulp makes it possible to locally mirror either all of or part of a repository. Pulp makes it possible to host content in new repositories, and makes it possible to manage content from multiple sources in a single place.
+
 Pulp 2.4 supports docker content and can serve as a docker registry.
 
 Why Pulp As a Docker Registry?
@@ -35,6 +39,12 @@ Components
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |* additional tooling (unreleased):| build on Pulp admin client, provides streamlined publishing workflow                                                                                            |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+Pulp Service Architecture
+-------------------------
+
+.. image:: images/pulp_component_architecture.png
+The above figure details the deployment of the Pulp Service architecture.
 
 Deployment Options
 ------------------
@@ -194,11 +204,6 @@ A certificate is downloaded and used on subsequent commands, so credentials do n
 +----------------------------------------------------------------------------------------------+
 
 
-Pulp Service Architecture
--------------------------
-
-.. image:: images/pulp_component_architecture.png
-The above figure details the deployment of the Pulp Service architecture.
 
 
 Publishing Docker Images
