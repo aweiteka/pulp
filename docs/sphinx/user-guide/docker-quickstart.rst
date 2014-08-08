@@ -32,7 +32,7 @@ Components
 |* pulp_docker plugin              | https://github.com/pulp/pulp_docker (unreleased): supports docker content type                                                                                  |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |* Crane                           | https://github.com/pulp/crane                                                                                                                                   |
-+----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                  |                                                                                                                                                                 |
 |* (unreleased): partial           | https://docs.docker.com/reference/api/registry_api/                                                                                                             |
 |  implementation of the docker    |                                                                                                                                                                 |
 |  registry protocol               |                                                                                                                                                                 |
