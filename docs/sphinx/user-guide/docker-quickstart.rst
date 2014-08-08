@@ -271,7 +271,7 @@ Upload and publish a docker image::
 
 The publish command also accepts a previously saved docker image. For example::
 
-        pulp-publish-docker --id app --repo my/app --file /run/docker_uploads/my-app.tar --publish
+        $ pulp-publish-docker --id app --repo my/app --file /run/docker_uploads/my-app.tar --publish
 
 See help output for complete options::
 
@@ -386,7 +386,7 @@ Manage Repositories
 Sync
 ++++
 
-Repositories may be synced from a remote source. This enables caching of select public content behind a firewall.
+Repositories may be synced from a remote source. This enables caching of select public content behind a firewall.::
 
         $ pulp-admin docker repo sync --repo-id rhel7 --url registry.access.redhat.com --remote-repo rhel7
 
