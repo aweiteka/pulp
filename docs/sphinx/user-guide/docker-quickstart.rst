@@ -146,17 +146,17 @@ Remote Client Tools
 
 The ``pulp-admin`` client may be `installed as an RPM <installation.rst>`_ or run as a container.
 
-The ``pulp-publish-docker`` utility is an initial prototype that automates the task of pushing docker images to the Pulp registry. It is based on the ``pulp-admin`` client.
+The ``pulp-publish-docker`` utility is a prototype that automates the task of pushing docker images to the Pulp registry. It is based on the ``pulp-admin`` client.
 
 **Setup**
 
 The ``install_client.sh`` script installs the required client components.::
 
-1) Download the installer::
+1) Download the install script::
 
         $ curl -O https://github.com/aweiteka/pulp-dockerfiles/tree/master/centos/install_client.sh
 
-2) Run the installer::
+2) Run the install script::
 
         $ bash install_client.sh pulp-registry.example.com
         Pulling docker images
@@ -196,12 +196,12 @@ The ``install_client.sh`` script installs the required client components.::
         Login with command "pulp-admin login -u admin -p admin"
 
 
-3) Log in using the remote pulp-admin client. Default username is "admin". Default password is "admin"::
+3) `Log in`_ using the remote pulp-admin client. In this example, the default username is "admin" and the default password is "admin". Your username and your password will probably not be "admin"::
 
         $ pulp-admin login -u admin -p admin
 
 
-A certificate is downloaded and used on subsequent commands, so credentials do not need to be passed in for each command.
+A certificate is downloaded and used on subsequent commands. Credentials therefore do not need to be passed in for each command.
 
 4) Change the default admin password::
 
@@ -211,8 +211,9 @@ A certificate is downloaded and used on subsequent commands, so credentials do n
 +----------------------------------------------------------------------------------------------+
 | **NOTE**                                                                                     |
 |                                                                                              |
-| A new container is created each time the pulp-admin runs. The ``--rm`` removes the ephemeral |
-| container after exiting. This adds a few seconds to execution and is optional.               |
+| A new container is created each time the pulp-admin runs. The ``--rm`` flag                  |
+| removes the ephemeral container after exiting. This adds a few seconds to execution          |
+| and is optional.                                                                             |
 +----------------------------------------------------------------------------------------------+
 
 
@@ -226,6 +227,12 @@ The ``pulp-publish-docker`` utility automates the steps necessary to do the foll
 * create a docker repository in Pulp
 * upload images to the docker repository in Pulp
 * publish the repository
+
++----------------------------------------------------------------------------------------------+
+| **IMPORTANT**                                                                                |
+| You must be logged in for the operations described in this section to work properly.         |
+| For information on how to log in, see .. _`Log in`                                           |
++----------------------------------------------------------------------------------------------+
 
 
 Usage output::
