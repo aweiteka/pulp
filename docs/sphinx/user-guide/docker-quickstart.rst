@@ -3,7 +3,7 @@ Pulp Docker Registry Quickstart Guide
 
 This document explains how to use Pulp as a Docker registry. Its intended audience is Independent Software Vendors and Enterprise users who need to know how to use Pulp as a Docker registry.
 
-Pulp is a content distribution network that facilitates the management of repositories of content. Pulp makes it possible to locally mirror either all of or part of a repository. Pulp makes it possible to host content in new repositories, and makes it possible to manage content from multiple sources in a single place.
+Pulp is a platform for managing repositories of content. Pulp makes it possible to locally mirror either all of or part of a repository. Pulp makes it possible to host content in new repositories, and makes it possible to manage content from multiple sources in a single place.
 
 Pulp 2.4 supports docker content and can serve as a docker registry.
 
@@ -11,9 +11,8 @@ Why Pulp As a Docker Registry?
 ------------------------------
 Pulp provides the following:
 
-* Separation of administrator interfaces (pulp backend client and API) and end-user interface
+* Separation of administrator interface (pulp API) and end-user interface (docker)
 * Role-based access control (RBAC) with LDAP support
-* The ability to push content to public-facing servers while keeping the management interface behind a firewall
 * Synchronization of content accross an organization using `nodes <https://pulp-user-guide.readthedocs.org/en/latest/nodes.html>`_.
 * `Well-documented API <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>`_
 * `Event-based notifications <https://pulp-dev-guide.readthedocs.org/en/latest/integration/events/index.html>`_ (http/amqp/email), that enable CI workflows and viewing history
@@ -23,24 +22,19 @@ Pulp provides the following:
 Components
 ----------
 
-.. FIXME: make this a table?
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|* Pulp server                     | (2.4 beta)                                                                                                                                                      |
+| pulp server                      | version 2.4 or greater. Includes a web server, mongo database and messaging broker                                                                              |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|* Pulp admin client               | https://registry.hub.docker.com/u/aweiteka/pulp-admin/ : remote management client                                                                               |
+| Pulp admin client                | remote management client, available as a `docker container <https://registry.hub.docker.com/u/aweiteka/pulp-admin/>`_                                           |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|* pulp_docker plugin              | https://github.com/pulp/pulp_docker (unreleased): supports docker content type                                                                                  |
+| pulp_docker plugin               | adds support for docker content type (`unreleased <https://github.com/pulp/pulp_docker>`_)                                                                      |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|* Crane                           | https://github.com/pulp/crane                                                                                                                                   |
-|                                  |                                                                                                                                                                 |
-|* (unreleased): partial           | https://docs.docker.com/reference/api/registry_api/                                                                                                             |
-|  implementation of the docker    |                                                                                                                                                                 |
-|  registry protocol               |                                                                                                                                                                 |
+| Crane                            | partial implementation of the `docker registry protocol <https://docs.docker.com/reference/api/registry_api/>`_ (`unreleased <https://github.com/pulp/crane>`_  |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|* additional tooling (unreleased):| build on Pulp admin client, provides streamlined publishing workflow                                                                                            |
+| pulp-publish-docker              | prototype tooling based on pulp-admin client providing streamlined publishing workflow                                                                          |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-Pulp as a Docker repository is based on a CentOS image.
+Pulp as a Docker repository is based on the CentOS 7 image.
 
 Click here to access the repository containing Dockerfiles for Pulp: `Dockerfile Source <https://github.com/aweiteka/pulp-dockerfiles>`_
 
