@@ -331,6 +331,8 @@ Repository and server management
 
 The ``pulp-admin`` client is required to manage the pulp server.
 
+In the example below, we create two roles: "contributors" and "repo_admin".
+
 Roles
 ^^^^^
 
