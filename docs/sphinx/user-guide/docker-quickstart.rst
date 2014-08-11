@@ -171,6 +171,7 @@ The ``install_client.sh`` script installs the required client components.::
         Login with command "pulp-admin login -u admin -p admin"
 
 .. _log-in:
+
 3) using the remote pulp-admin client. In this example, the default username is "admin" and the default password is "admin". Your username and password will probably not be "admin"::
 
         $ pulp-admin login -u admin -p admin
