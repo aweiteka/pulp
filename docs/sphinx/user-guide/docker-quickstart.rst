@@ -92,6 +92,9 @@ Server
 **Host Configuration**
 
 1) Make sure that the docker daemon is running and configured to run on startup::
+       
+       $ sudo service docker start
+       $ sudo chkconfig enable docker
 
 2) Open the following ports to incoming traffic.
 
