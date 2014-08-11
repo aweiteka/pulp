@@ -206,7 +206,7 @@ The ``pulp-publish-docker`` utility automates the steps necessary to do the foll
 +----------------------------------------------------------------------------------------------+
 | **IMPORTANT**                                                                                |
 | You must be logged in for the operations described in this section to work properly.         |
-| For information on how to log in, see log-in_                                            |
+| For information on how to log in, see log-in_                                                |
 +----------------------------------------------------------------------------------------------+
 
 
