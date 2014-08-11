@@ -41,6 +41,8 @@ Click here to access the repository containing Dockerfiles for Pulp: `Dockerfile
 Pulp Service Architecture
 -------------------------
 
+The Pulp Service Architecture is a distributed task queue composed of Apache, Crane, MongoDB, QPID, Pulp CeleryBeat, Pulp Resource Manager, an arbitrary number of Pulp Workers, the pulp-admin-client, and the docker client. Workers can be spun up manually to scale the architecture.
+
 .. image:: images/pulp_component_architecture.png
 The above figure details the deployment of the Pulp Service architecture.
 
@@ -59,7 +61,7 @@ The above figure details the deployment of the Pulp Service architecture.
 +---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Workers       | The workers are brain-dead and do what they are commanded to do.                                                                                                                  |
 +---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Celery Beat   | Controls the task queue.                                                                                                                                                          |
+| Celery Beat   | Controls the task queue. `Explanation of Celery <https://fedorahosted.org/pulp/wiki/celery>`_                                                                                     |
 +---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | QPID          | The open-source messaging system that implements AMQP.                                                                                                                            |
 +---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
