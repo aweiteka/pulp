@@ -170,8 +170,6 @@ The ``install_client.sh`` script installs the required client components.::
         2 aliases created
         Login with command "pulp-admin login -u admin -p admin"
 
-.. _log-in:
-
 3) using the remote pulp-admin client. In this example, the default username is "admin" and the default password is "admin". Your username and password will probably not be "admin"::
 
         $ pulp-admin login -u admin -p admin
@@ -207,7 +205,7 @@ The ``pulp-publish-docker`` utility automates the steps necessary to do the foll
 +----------------------------------------------------------------------------------------------+
 | **IMPORTANT**                                                                                |
 | You must be logged in for the operations described in this section to work properly.         |
-| For information on how to log in, see log-in_                                                |
+| For information on how to log in, see step 3 of the procedure in `Remote Client Tools`_      |
 +----------------------------------------------------------------------------------------------+
 
 
