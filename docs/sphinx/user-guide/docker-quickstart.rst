@@ -80,6 +80,19 @@ This document focuses on the setup and configuration of the multi-container envi
 Installation
 ------------
 
+Requirements
+^^^^^^^^^^^^
+* Disk: TBD
+* DNS: The pulp server must have a resolvable hostname for the pulp-admin and docker remote clients to interact with it.
+
++----------------------------------------------------------------+
+| **NOTE**                                                       |
+| The container-ized version of the Pulp server creates self-    |
+| signed SSL certificates during run-time. Providing a           |
+| configuration option to use an organization's certificates is  |
+| a known issue.                                                 |
++----------------------------------------------------------------+
+
 Server
 ^^^^^^
 
@@ -94,14 +107,12 @@ Server
 * 5672 (QPID)
 * 27017 (MongoDB)
 
-Example commands using firewall-cmd::
+Example commands using iptables::
 
-        $ sudo firewall-cmd --permanent --add-service http
-        $ sudo firewall-cmd --permanent --add-service https
-        $ sudo firewall-cmd --permanent --add-port 27017/tcp
-        $ sudo firewall-cmd --permanent --add-port 5672/tcp
-        $ sudo firewall-cmd --reload
-
+        $ iptables -I INPUT -p tcp --dport 27017 -j ACCEPT
+        $ iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+        $ iptables -I INPUT -p tcp --dport 443 -j ACCEPT
+        $ iptables -I INPUT -p tcp --dport 5672 -j ACCEPT
 
 **Server Installation**
 
@@ -109,11 +120,11 @@ The Pulp server is packaged as a multi-container environment. It is a basic "all
 
 1) Download the installer::
 
-        $ curl -O https://github.com/aweiteka/pulp-dockerfiles/tree/master/centos/install_server.sh
+        $ curl -O https://raw.githubusercontent.com/aweiteka/pulp-dockerfiles/master/centos/install_pulp_server.sh
 
 2) Run the installer::
 
-        $ bash install_server.sh <host_ip_address>
+        $ sudo bash install_pulp_server.sh <host_ip_address>
 
 3) View the images::
 
@@ -164,11 +175,11 @@ The ``install_client.sh`` script installs the required client components.::
 
 1) Download the install script::
 
-        $ curl -O https://github.com/aweiteka/pulp-dockerfiles/tree/master/centos/install_client.sh
+        $ curl -O https://raw.githubusercontent.com/aweiteka/pulp-dockerfiles/master/centos/install_pulp_client.sh
 
 2) Run the install script::
 
-        $ bash install_client.sh pulp-registry.example.com
+        $ sudo bash install_pulp_client.sh pulp-registry.example.com
         Pulling docker images
         Pulling repository aweiteka/pulp-admin
         8a01d78f4c70: Download complete
@@ -332,7 +343,7 @@ See help output for complete options::
 Repository and server management
 --------------------------------
 
-The ``pulp-admin`` client is required to manage the pulp server.
+The ``pulp-admin`` client provides administrative control of the pulp server.
 
 Roles
 ^^^^^
