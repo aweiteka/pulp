@@ -374,17 +374,13 @@ Users
 
 Users may be manually created. Alternatively the Pulp server may be connected to an LDAP server. See `authentication` for configuration instructions.
 
-Create a contributor user. You will be prompted for a password::
+Create a contributor user::
 
-        $ pulp-admin auth user create --login jdev --name "Joe Developer"
+        $ pulp-admin auth user create --login jdev --name "Joe Developer" --password badpass
 
-        Enter password for user [jdev] : **********
-        Re-enter password for user [jdev]: **********
-        User [jdev] successfully created
+Create a repository admin user::
 
-Create a repository admin user. You will be prompted for a password::
-
-        $ pulp-admin auth user create --login madmin --name "Mary Admin"
+        $ pulp-admin auth user create --login madmin --name "Mary Admin" --password badpass
 
 Assign user to role::
 
