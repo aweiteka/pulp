@@ -197,14 +197,18 @@ The ``install_client.sh`` script installs the required client components.::
         2 aliases created
         Login with command "pulp-admin login -u admin -p admin"
 
-3) using the remote pulp-admin client. In this example, the default username is "admin" and the default password is "admin". If you are not the administrator contact the Pulp administrator for your username and password::
+3) Source the ~/.bashrc file to update aliases in the current shell::
 
-        $ pulp-admin login -u admin -p admin
+        $ source ~/.bashrc
+
+4) Login using the remote pulp-admin client. In this example, the default username is "admin" and the default password is "admin". If you are not the administrator contact the Pulp system administrator for your username and password::
+
+        $ pulp-admin login -u <username> -p <password>
 
 
 A certificate is downloaded and used on subsequent commands. Credentials therefore do not need to be passed in for each command.
 
-4) If the administrator, change the default admin password::
+5) If the administrator, change the default admin password::
 
         $ pulp-admin auth user update --login admin -p
         Enter new password for user [admin] : ********
