@@ -483,3 +483,10 @@ Apache and the Pulp Celery workers log to journald. From the container host use 
 
         $ sudo journalctl SYSLOG_IDENTIFIER=pulp + SYSLOG_IDENTIFIER=celery + SYSLOG_IDENTIFIER=httpd
 
+Uninstall
+^^^^^^^^^
+
+The pulp server containers may be stopped and removed using the install script. This will not remove the images.::
+
+        $ bash install_pulp_server.sh uninstall
+
