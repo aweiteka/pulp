@@ -124,7 +124,7 @@ The Pulp server is packaged as a multi-container environment. It is a basic "all
 
 2) Run the installer::
 
-        $ sudo bash install_pulp_server.sh <host_ip_address>
+        $ sudo bash install_pulp_server.sh
 
 3) View the images::
 
@@ -488,5 +488,5 @@ Uninstall
 
 The pulp server containers may be stopped and removed using the install script. This will not remove the images.::
 
-        $ bash install_pulp_server.sh uninstall
+        $ sudo bash install_pulp_server.sh uninstall
 
