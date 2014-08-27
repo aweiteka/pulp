@@ -31,7 +31,7 @@ Components
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Crane                            | partial implementation of the `docker registry protocol <https://docs.docker.com/reference/api/registry_api/>`_ (`unreleased <https://github.com/pulp/crane>`_) |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| pulp-publish-docker              | prototype tooling based on pulp-admin client providing streamlined publishing workflow                                                                          |
+| registry-admin.py                | prototype script based on pulp-admin client providing docker-focused managament of pulp registry                                                                |
 +----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Pulp packaged as a set of Docker images is based on the CentOS 7 image.
@@ -162,31 +162,20 @@ The Pulp server is packaged as a multi-container environment. It is a basic "all
 +----------------------------------------------------------------------------------------------+
 
 
-Remote Client Tools
-^^^^^^^^^^^^^^^^^^^
+Remote Client
+^^^^^^^^^^^^^
 
-The ``pulp-admin`` client may be `installed as an RPM <installation.rst>`_ or run as a container.
-
-The ``pulp-publish-docker`` utility is a prototype that automates the task of pushing docker images to the Pulp registry. It is based on the ``pulp-admin`` client.
+The ``registry-admin.py`` is a prototype script providing docker-focused management of the Pulp registry. It is based on the ``pulp-admin`` client. To simplify installation, ``registry-admin.py`` runs the pulp-admin client as a container.
 
 **Setup**
 
-The ``install_client.sh`` script installs the required client components.::
+1) Download the script::
 
-1) Download the install script::
+        $ curl -O https://raw.githubusercontent.com/aweiteka/pulp-dockerfiles/master/registry_admin.py
 
-        $ curl -O https://raw.githubusercontent.com/aweiteka/pulp-dockerfiles/master/centos/install_pulp_client.sh
+2) Make it executable::
 
-2) Run the install script::
-
-        $ sudo bash install_pulp_client.sh pulp-registry.example.com
-        Pulling docker images
-        Pulling repository aweiteka/pulp-admin
-        8a01d78f4c70: Download complete
-        ...
-        e013d95b0414: Download complete
-        Pulling repository aweiteka/pulp-publish-docker
-        7a377a6584f0: Download complete
+        $ chmod +x registry_admin.py
         ...
         6bb39d1d3ead: Download complete
         Setting up ~/.pulp directory
@@ -197,20 +186,31 @@ The ``install_client.sh`` script installs the required client components.::
         2 aliases created
         Login with command "pulp-admin login -u admin -p admin"
 
-3) Source the ~/.bashrc file to update aliases in the current shell::
+3) Login. In this example, the default username is "admin" and the default password is "admin". If you are not the administrator contact the Pulp system administrator for your username and password. Note, the first time the script runs it will download the pulp-admin docker image.::
 
-        $ source ~/.bashrc
+        $ ./registry-admin login
+        Registry config file not found. Setting up environment.
+        Creating config file /home/aweiteka/.pulp/admin.conf
+        Enter registry server hostname: registry.example.com
+        Verify SSL (requires CA-signed certificate) [False]: 
+        User certificate not found.
+        Enter registry username [aweiteka]: admin
+        Enter registry password: 
 
-4) Login using the remote pulp-admin client. In this example, the default username is "admin" and the default password is "admin". If you are not the administrator contact the Pulp system administrator for your username and password::
+        Pulling docker images
+        Pulling repository aweiteka/pulp-admin
+        8a01d78f4c70: Download complete
+        ...
+        e013d95b0414: Download complete
+        Pulling repository aweiteka/pulp-publish-docker
+        7a377a6584f0: Download complete
 
-        $ pulp-admin login -u <username> -p <password>
 
+A certificate is generated and used on subsequent commands. Credentials therefore do not need to be passed in for each command.
 
-A certificate is downloaded and used on subsequent commands. Credentials therefore do not need to be passed in for each command.
+4) If the administrator, change the default admin password::
 
-5) If the administrator, change the default admin password::
-
-        $ pulp-admin auth user update --login admin -p
+        $ ./registry-admin.py pulp "auth user update --login admin -p"
         Enter new password for user [admin] : ********
 
 +----------------------------------------------------------------------------------------------+
@@ -223,26 +223,20 @@ A certificate is downloaded and used on subsequent commands. Credentials therefo
 
 
 
-Publishing Docker Images
-------------------------
-
-The ``pulp-publish-docker`` utility automates the steps necessary to do the following:
-
-* create a docker repository in Pulp
-* upload images to the docker repository in Pulp
-* publish the repository
+Using the registry
+------------------
 
 +----------------------------------------------------------------------------------------------+
 | **IMPORTANT**                                                                                |
 | You must be logged in for the operations described in this section to work properly.         |
-| For information on how to log in, see step 3 of the procedure in `Remote Client Tools`_      |
+| For information on how to log in, see step 3 of the procedure in `Remote Client`_            |
 +----------------------------------------------------------------------------------------------+
 
 
-Upload and publish a docker image::
+Push a docker image to the registry::
 
-        $ docker save my/app | pulp-publish-docker --id app --repo my/app --publish
-        Repository [app] successfully created
+        $ ./registry-admin.py push my/app
+        Repository [my-app] successfully created
 
         +----------------------------------------------------------------------+
                                       Unit Upload
@@ -299,63 +293,33 @@ Upload and publish a docker image::
 
         Task Succeeded
 
-The publish command also accepts a previously saved docker image. For example::
+Create an empty repo with a git URL. Use the full URL path to the Dockerfile.::
 
-        $ pulp-publish-docker --id app --repo my/app --file /run/docker_uploads/my-app.tar --publish
+        $ ./registry-admin.py create aweiteka/webserver --git-url http://git.example.com/repo/myapp
+        Repository [aweiteka-webserver] successfully created
 
-See help output for complete options::
+List repositories::
 
-        $ pulp-publish-docker --help
-        Usage:
-            Upload (2 methods): will create repo if needed, optional publish
-              STDIN from "docker save"
-              docker save <docker_repo> | pulp_docker_util.py --id <pulp_repo> [OPTIONS]
+        $ ./registry-admin.py list repos
+        [FIXME: output]
 
-              from previously saved tar file
-              pulp_docker_util --id <pulp_repo> -f </run/docker_uploads/image.tar> [OPTIONS]
+List repo images::
 
-            Create repo only (do not upload or publish):
-            ./pulp_docker_util.py --repo <repo> [OPTIONS]
+        $ ./registry-admin.py list my/app
+        [FIXME: output]
 
-            Publish existing repo:
-            ./pulp_docker_util.py --repo <repo> --publish
+Registry Management
+-------------------
 
-            List repos:
-            ./pulp_docker_util.py --list
-
-        Options:
-          --version             show program's version number and exit
-          -h, --help            show this help message and exit
-          -i ID, --id=ID        Pulp repository ID, required for most pulp commands.
-                                Only alphanumeric, ., -, and _ allowed
-          -r REPO, --repo=REPO  Docker repository name for 'docker pull <my/registry>'.
-                                If not specified the Pulp ID will be used
-          -d DESCRIPTION, --description=DESCRIPTION
-                                Pulp repository description
-          -n DISPLAY_NAME, --name=DISPLAY_NAME
-                                Pulp repository display name
-          -u URL, --url=URL     The URL that will be used when generating the
-                                redirect. Defaults to pulp server,
-                                https://<pulp_server>/pulp/docker/<repo_id>
-          -f FILENAME, --file=FILENAME
-                                Full path to image tarball for upload
-          -p, --publish         Publish repository. May be added to image upload or
-                                used alone.
-          -l, --list            List repositories. Used alone.
-
-
-Repository and server management
---------------------------------
-
-The ``pulp-admin`` client provides administrative control of the pulp server.
+Most registry management is performed using native Pulp commands in the form of ``./registry-admin.py pulp "COMMAND"``. Refer to `pulp-admin documentation <https://pulp-user-guide.readthedocs.org/en/pulp-2.4/admin-client/index.html>` for complete usage.
 
 Roles
 ^^^^^
 
 In the example below, we create two roles: "contributor" and "repo_admin"::
 
-        $ pulp-admin auth role create --role-id contributor --description "content contributors"
-        $ pulp-admin auth role create --role-id repo_admin --description "Repository management"
+        $ ./registry-admin.py pulp "auth role create --role-id contributor --description 'content contributors'"
+        $ ./registry-admin.py pulp "auth role create --role-id repo_admin --description 'Repository management'"
 
 Permissions
 ^^^^^^^^^^^
@@ -363,11 +327,11 @@ Permissions must be assigned to roles to enable access.  See `API documentation 
 
 Here we create permissions for the "contributors" role so they can create repositories and upload content but cannot delete repositories::
 
-        $ pulp-admin auth permission grant --role-id contributor --resource /repositories -o create -o read -o update -o execute
-        $ pulp-admin auth permission grant --role-id contributor --resource /repositories -o create -o read -o update -o execute
-        $ pulp-admin auth permission grant --role-id contributor --resource /content/uploads -o create -o update
-        $ pulp-admin auth permission grant --role-id repo_admin --resource /repositories -o create -o read -o update -o delete -o execute
-        $ pulp-admin auth permission grant --role-id repo_admin --resource /content/uploads -o create -o update
+        $ ./registry-admin.py pulp "auth permission grant --role-id contributor --resource /repositories -o create -o read -o update -o execute"
+        $ ./registry-admin.py pulp "auth permission grant --role-id contributor --resource /repositories -o create -o read -o update -o execute"
+        $ ./registry-admin.py pulp "auth permission grant --role-id contributor --resource /content/uploads -o create -o update"
+        $ ./registry-admin.py pulp "auth permission grant --role-id repo_admin --resource /repositories -o create -o read -o update -o delete -o execute"
+        $ ./registry-admin.py pulp "auth permission grant --role-id repo_admin --resource /content/uploads -o create -o update"
 
 Users
 ^^^^^
@@ -376,26 +340,26 @@ Users may be manually created. Alternatively the Pulp server may be connected to
 
 Create a contributor user::
 
-        $ pulp-admin auth user create --login jdev --name "Joe Developer" --password badpass
+        $ ./registry-admin.py pulp "auth user create --login jdev --name 'Joe Developer' --password badpass"
 
 Create a repository admin user::
 
-        $ pulp-admin auth user create --login madmin --name "Mary Admin" --password badpass
+        $ ./registry-admin.py pulp "auth user create --login madmin --name 'Mary Admin' --password badpass"
 
 Assign user to role::
 
-        $ pulp-admin auth role user add --role-id contributor --login jdev
-        $ pulp-admin auth role user add --role-id repo_admin --login madmin
+        $ ./registry-admin.py pulp "auth role user add --role-id contributor --login jdev"
+        $ ./registry-admin.py pulp "auth role user add --role-id repo_admin --login madmin"
 
 Test permission assignments.
 
 1) Logout as "admin" user::
 
-        $ pulp-admin logout
+        $ ./registry-admin.py logout
 
 2) Login as "jdev" user::
 
-        $ pulp-admin login -u jdev
+        $ ./registry-admin.py login -u jdev
 
 3) Ensure "Joe Developer" can create, upload and publish a repository. Ensure that "Joe Developer" cannot delete repositories or manage users.
 
@@ -414,7 +378,7 @@ Sync
 
 Repositories may be synced from a remote source. This enables caching of select public content behind a firewall.::
 
-        $ pulp-admin docker repo sync --repo-id rhel7 --feed registry.access.redhat.com --upstream-name rhel7
+        $ ./registry-admin.py pulp "docker repo sync --repo-id rhel7 --feed registry.access.redhat.com --upstream-name rhel7"
 
 This creates a pulp repository named "rhel7" with the rhel7 images from Red Hat.
 
@@ -423,18 +387,18 @@ Groups
 
 Create repository group::
 
-        $ pulp-admin repo group create --group-id baseos --description "base OS docker images"
+        $ ./registry-admin.py pulp "repo group create --group-id baseos --description 'base OS docker images'"
 
 Assign repository to group::
 
-        $ pulp-admin repo group members add --group-id=baseos --repo-id centos
+        $ ./registry-admin.py pulp "repo group members add --group-id=baseos --repo-id centos"
 
 Metadata
 ++++++++
 
 Repositories and repository groups may have notes or key:value pair metadata added. Here we add an "environment" note to a repository::
 
-        $ pulp-admin docker repo update --repo-id centos --note environment=test
+        $ ./registry-admin.py pulp "docker repo update --repo-id centos --note environment=test"
 
 Copy
 ++++
