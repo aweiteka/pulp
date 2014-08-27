@@ -303,7 +303,7 @@ List repositories::
         $ ./registry-admin.py list repos
         [FIXME: output]
 
-List repo images::
+List images in a repository::
 
         $ ./registry-admin.py list my/app
         [FIXME: output]
@@ -311,7 +311,7 @@ List repo images::
 Registry Management
 -------------------
 
-Most registry management is performed using native Pulp commands in the form of ``./registry-admin.py pulp "COMMAND"``. Refer to `pulp-admin documentation <https://pulp-user-guide.readthedocs.org/en/pulp-2.4/admin-client/index.html>` for complete usage.
+Most registry management is performed using native Pulp commands in the form of ``./registry-admin.py pulp "COMMAND"``. Refer to `pulp-admin documentation <https://pulp-user-guide.readthedocs.org/en/pulp-2.4/admin-client/index.html>`_ for complete usage.
 
 Roles
 ^^^^^
@@ -323,7 +323,7 @@ In the example below, we create two roles: "contributor" and "repo_admin"::
 
 Permissions
 ^^^^^^^^^^^
-Permissions must be assigned to roles to enable access.  See `API documentation <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>` for paths to resources.
+Permissions must be assigned to roles to enable access.  See `API documentation <https://pulp-dev-guide.readthedocs.org/en/latest/integration/rest-api/index.html>`_ for paths to resources.
 
 Here we create permissions for the "contributors" role so they can create repositories and upload content but cannot delete repositories::
 
