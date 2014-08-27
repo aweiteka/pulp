@@ -69,13 +69,7 @@ Pulp can be deployed as a Docker registry in two different ways:
 
 This document focuses on the setup and configuration of the multi-container environment.
 
-+----------------------------------------------------------------+
-| **NOTE**                                                       |
-| If you prefer a more traditional virtual-machine-based         |
-| installation, follow the instructions linked to above, in the  |
-| link indicated by the words "Pulp as a VM, with Crane as a     |
-| Docker Container".                                             |
-+----------------------------------------------------------------+
+.. note:: If you prefer a more traditional virtual-machine based installation, follow the instructions linked to above, in the link indicated by the words "Pulp as a VM, with Crane as a Docker Container".
 
 Installation
 ------------
@@ -85,13 +79,7 @@ Requirements
 * Disk: TBD
 * DNS: The pulp server must have a resolvable hostname for the pulp-admin and docker remote clients to interact with it.
 
-+----------------------------------------------------------------+
-| **NOTE**                                                       |
-| The container-ized version of the Pulp server creates self-    |
-| signed SSL certificates during run-time. Providing a           |
-| configuration option to use an organization's certificates is  |
-| a known issue.                                                 |
-+----------------------------------------------------------------+
+.. note:: The container-ized version of the Pulp server creates self-signed SSL certificates during run-time. The absence of a configuration option to use your organization's certificates is a known issue.
 
 Server
 ^^^^^^
@@ -154,12 +142,7 @@ The Pulp server is packaged as a multi-container environment. It is a basic "all
         80d80664abfd        aweiteka/pulp-mongodb:latest          /usr/bin/mongod --qu   39 seconds ago      Up 39 seconds  0.0.0.0:27017->27017/tcp        pulp-mongodb            
         137fbd04c73a        aweiteka/pulp-data:latest             /run.sh                40 seconds ago      Exited (0) 39 seconds ago                      pulp-data       
 
-+----------------------------------------------------------------------------------------------+
-| **NOTE**                                                                                     |
-|                                                                                              |
-| The pulp-data container exits immediately. It is a dependent volume container referenced by  |
-| ``--volumes-from``. It persists as a shared volume while the other containers are running.   |
-+----------------------------------------------------------------------------------------------+
+.. note:: The pulp-data container exits immediately. It is a dependent volume container referenced by ``--volumes-from``. It persists as a shared volume while the other containers are running.
 
 
 Remote Client
@@ -213,24 +196,13 @@ A certificate is generated and used on subsequent commands. Credentials therefor
         $ ./registry-admin.py pulp "auth user update --login admin -p"
         Enter new password for user [admin] : ********
 
-+----------------------------------------------------------------------------------------------+
-| **NOTE**                                                                                     |
-|                                                                                              |
-| A new container is created each time the pulp-admin runs. The ``--rm`` flag                  |
-| removes the ephemeral container after exiting. This adds a few seconds to execution          |
-| and is optional.                                                                             |
-+----------------------------------------------------------------------------------------------+
-
+.. note:: A new container is created each time the pulp-admin runs. The ``--rm`` flag removes the ephemeral container after exiting. This adds a few seconds to execution and is optional.
 
 
 Using the registry
 ------------------
 
-+----------------------------------------------------------------------------------------------+
-| **IMPORTANT**                                                                                |
-| You must be logged in for the operations described in this section to work properly.         |
-| For information on how to log in, see step 3 of the procedure in `Remote Client`_            |
-+----------------------------------------------------------------------------------------------+
+.. warning:: You must be logged in for the operations described in this section to work properly. For information on how to log in, see step 3 of the procedure in `Remote Client`_ 
 
 
 Push a docker image to the registry::
@@ -363,11 +335,7 @@ Test permission assignments.
 
 3) Ensure "Joe Developer" can create, upload and publish a repository. Ensure that "Joe Developer" cannot delete repositories or manage users.
 
-+--------------------------------------------------------------------------------------------------------+
-|**NOTE**                                                                                                |
-|                                                                                                        |
-|Users that require access to all pulp administrative commands should be assigned the "super-users" role.|
-+--------------------------------------------------------------------------------------------------------+
+.. note:: Users that require access to all pulp administrative commands should be assigned the "super-users" role.
 
 
 Manage Repositories
