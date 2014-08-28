@@ -298,15 +298,22 @@ Create an empty repo with a git URL. Use the full URL path to the Dockerfile.::
         $ ./registry-admin.py create aweiteka/webserver --git-url http://git.example.com/repo/myapp
         Repository [aweiteka-webserver] successfully created
 
+Linking a Dockerfile repository with the registry image provides the necessary link for continuous integration workflows. If an event listener was connected to the Pulp registry, the above command would create an event to start an automated docker build using the Dockerfile.
+
 List repositories::
 
         $ ./registry-admin.py list repos
-        [FIXME: output]
+        my/app
+        aweiteka/webserver
 
 List images in a repository::
 
         $ ./registry-admin.py list my/app
-        [FIXME: output]
+        511136ea3c5a64f264b78b5433614aec563103b4d4702f3ba7d4d2698e22c158
+        7b23ea3439e3aceaa35bc33529535b3e52c3cf98672da371d9faa09b2969f47c
+        bcc5d0080e78726615e55c0954156e1be584832284c9a6621436feb027ae7845
+        c811aee30291a2960fbc5b8c46b8c756b4ad98f0c4d44e79b7c7729f1a35ee20
+
 
 Registry Management
 -------------------
