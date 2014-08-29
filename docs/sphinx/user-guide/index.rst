@@ -15,6 +15,7 @@ Contents:
    admin-client/index
    consumer-client/index
    nodes
+   docker-quickstart
    content-sources
    general-reference
    glossary
